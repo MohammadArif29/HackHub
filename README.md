@@ -171,9 +171,6 @@ The application will be available at `http://localhost:3000`
 ## License
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-## Support
-For support, email support@hackhub.com or create an issue in the repository.
-
 ## Acknowledgments
 - Bootstrap for the UI framework
 - Font Awesome for icons
