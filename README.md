@@ -169,7 +169,7 @@ The application will be available at `http://localhost:3000`
 5. Open a Pull Request
 
 ## License
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the MIT License - see the LICENSE file for details
 
 ## Acknowledgments
 - Bootstrap for the UI framework
