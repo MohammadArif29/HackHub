@@ -1,0 +1,207 @@
+<div class="dashboard-content">
+    <!-- Welcome Section -->
+    <div class="welcome-section">
+        <h1>Welcome, <%= user.firstName %>!</h1>
+        <p class="text-muted">Manage your judging assignments and review submissions</p>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-3">
+            <div class="stat-card gradient-purple">
+                <div class="stat-icon">
+                    <i class="fas fa-gavel"></i>
+                </div>
+                <div class="stat-info">
+                    <h3 data-stat="assignedHackathons"><%= stats.assignedHackathons %></h3>
+                    <p>Active Assignments</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card gradient-blue">
+                <div class="stat-icon">
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <div class="stat-info">
+                    <h3 data-stat="pendingInvites"><%= stats.pendingInvites %></h3>
+                    <p>Pending Invites</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card gradient-orange">
+                <div class="stat-icon">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="stat-info">
+                    <h3 data-stat="pendingReviews"><%= stats.pendingReviews %></h3>
+                    <p>Pending Reviews</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card gradient-green">
+                <div class="stat-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="stat-info">
+                    <h3 data-stat="completedReviews"><%= stats.completedReviews %></h3>
+                    <p>Completed Reviews</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Active Assignments -->
+    <section class="dashboard-section mb-4">
+        <div class="section-header d-flex justify-content-between align-items-center">
+            <h2>Active Assignments</h2>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Hackathon</th>
+                        <th>Submissions</th>
+                        <th>Due Date</th>
+                        <th>Progress</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="activeAssignments">
+                    <% if (typeof activeAssignments !== 'undefined' && activeAssignments.length > 0) { %>
+                        <% activeAssignments.forEach(assignment => { %>
+                            <tr>
+                                <td><%= assignment.hackathon.title %></td>
+                                <td><%= assignment.totalSubmissions %> submissions</td>
+                                <td><%= new Date(assignment.dueDate).toLocaleDateString() %></td>
+                                <td>
+                                    <div class="progress">
+                                        <div class="progress-bar" role="progressbar" 
+                                             style="width: <%= Math.round((assignment.reviewedCount / assignment.totalSubmissions) * 100) || 0 %>%">
+                                            <%= assignment.reviewedCount %>/<%= assignment.totalSubmissions %>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <a href="/judge/review/<%= assignment.hackathon._id %>" 
+                                       class="btn btn-primary btn-sm">Review Submissions</a>
+                                </td>
+                            </tr>
+                        <% }); %>
+                    <% } else { %>
+                        <tr>
+                            <td colspan="5" class="text-center">No active assignments found</td>
+                        </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Pending Invitations -->
+    <section class="dashboard-section mb-4">
+        <div class="section-header">
+            <h2>Pending Invitations</h2>
+        </div>
+        <div class="row g-4" id="pendingInvitations">
+            <% if (typeof pendingInvites !== 'undefined' && pendingInvites.length > 0) { %>
+                <% pendingInvites.forEach(invite => { %>
+                    <div class="col-md-4">
+                        <div class="invitation-card">
+                            <div class="invitation-header">
+                                <h3><%= invite.hackathon.title %></h3>
+                                <span class="badge bg-warning">Pending</span>
+                            </div>
+                            <div class="invitation-details">
+                                <p><strong>Organizer:</strong> <%= invite.hackathon.organizer.organization %></p>
+                                <p><strong>Dates:</strong> <%= new Date(invite.hackathon.startDate).toLocaleDateString() %> - 
+                                                          <%= new Date(invite.hackathon.endDate).toLocaleDateString() %></p>
+                                <p><strong>Invited:</strong> <%= new Date(invite.invitedAt).toLocaleDateString() %></p>
+                            </div>
+                            <div class="invitation-actions">
+                                <button class="btn btn-success btn-sm" onclick="acceptInvitation('<%= invite.hackathon._id %>')">
+                                    Accept
+                                </button>
+                                <button class="btn btn-danger btn-sm" onclick="declineInvitation('<%= invite.hackathon._id %>')">
+                                    Decline
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                <% }); %>
+            <% } else { %>
+                <div class="col-12">
+                    <div class="alert alert-info">No pending invitations</div>
+                </div>
+            <% } %>
+        </div>
+    </section>
+
+    <!-- Upcoming Hackathons -->
+    <section class="dashboard-section">
+        <div class="section-header">
+            <h2>Upcoming Hackathons</h2>
+        </div>
+        <div class="row g-4" id="upcomingHackathons">
+            <% if (typeof upcomingHackathons !== 'undefined' && upcomingHackathons.length > 0) { %>
+                <% upcomingHackathons.forEach(hackathon => { %>
+                    <div class="col-md-4">
+                        <div class="hackathon-card">
+                            <div class="hackathon-status">
+                                <span class="badge bg-info">Upcoming</span>
+                            </div>
+                            <h3 class="hackathon-title"><%= hackathon.title %></h3>
+                            <div class="hackathon-info">
+                                <div class="info-item">
+                                    <i class="fas fa-calendar"></i>
+                                    <span><%= new Date(hackathon.startDate).toLocaleDateString() %></span>
+                                </div>
+                                <div class="info-item">
+                                    <i class="fas fa-users"></i>
+                                    <span><%= hackathon.participants ? hackathon.participants.length : 0 %> Participants</span>
+                                </div>
+                                <div class="info-item">
+                                    <i class="fas fa-building"></i>
+                                    <span>
+                                        <%= hackathon.organizer && hackathon.organizer.organization ? 
+                                            hackathon.organizer.organization : 'Organization not specified' %>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="hackathon-actions">
+                                <button class="btn btn-outline-primary" 
+                                        onclick="requestToJudge('<%= hackathon._id %>')"
+                                        <%= hackathon.alreadyRequested ? 'disabled' : '' %>>
+                                    <%= hackathon.alreadyRequested ? 'Request Sent' : 'Request to Judge' %>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                <% }); %>
+            <% } else { %>
+                <div class="col-12">
+                    <div class="alert alert-info">No upcoming hackathons available</div>
+                </div>
+            <% } %>
+        </div>
+    </section>
+</div>
+
+<!-- Review Modal -->
+<div class="modal fade" id="reviewModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Review Submission</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Review form will be loaded here -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/assets/js/judge-dashboard.js"></script> 

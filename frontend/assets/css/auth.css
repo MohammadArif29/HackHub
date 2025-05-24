@@ -1,0 +1,249 @@
+body {
+    margin: 0;
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+}
+
+.auth-page {
+    overflow: hidden;
+    height: 100vh;
+}
+
+.background-content {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    filter: blur(8px);
+    transform: scale(1.1); /* Prevent blur edges from showing */
+}
+
+.auth-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    z-index: 1000;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.auth-box {
+    background: rgba(255, 255, 255, 0.98);
+    padding: 2.5rem;
+    padding-top: 3rem; /* Increase top padding to accommodate close button */
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 600px;
+    max-height: 90vh; /* Limit height to 90% of viewport height */
+    overflow-y: auto; /* Enable scrolling */
+    animation: slideIn 0.3s ease;
+    position: relative;
+    z-index: 1001;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.auth-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: transparent;
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: var(--secondary-color);
+    font-size: 1.2rem;
+    z-index: 1002;
+}
+
+.auth-close:hover {
+    color: var(--primary-color);
+    transform: rotate(90deg);
+}
+
+.role-selector {
+    text-align: center;
+}
+
+.role-buttons {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+}
+
+.role-btn {
+    background: white;
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    padding: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    flex: 1;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.role-btn i {
+    font-size: 1.25rem;
+    color: var(--secondary-color);
+}
+
+.role-btn.active {
+    border-color: var(--primary-color);
+    background: var(--gradient-primary);
+    color: white;
+}
+
+.role-btn.active i {
+    color: white;
+}
+
+.role-btn:hover {
+    transform: translateY(-2px);
+}
+
+.form-control {
+    padding: 0.5rem 0.75rem;
+    border-radius: 10px;
+    border: 2px solid #e9ecef;
+}
+
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: none;
+}
+
+.btn-primary {
+    padding: 0.75rem 2rem;
+}
+
+.password-input {
+    position: relative;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: none;
+    background: none;
+    color: #6c757d;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+}
+
+.toggle-password:hover {
+    color: var(--primary-color);
+}
+
+.form-check-input:checked {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.text-primary {
+    color: var(--primary-color) !important;
+    text-decoration: none;
+}
+
+.text-primary:hover {
+    text-decoration: underline;
+}
+
+/* Error message styling */
+.error-message {
+    color: #dc3545;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    padding: 0.75rem 1.25rem;
+    margin-bottom: 1rem;
+    border-radius: 10px;
+    display: none;
+}
+
+.error-message.show {
+    display: block;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Remove the mainContent and auth-page styles */
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: url('/') no-repeat center center fixed;
+    background-size: cover;
+}
+
+/* Add custom scrollbar for the auth-box */
+.auth-box::-webkit-scrollbar {
+    width: 8px;
+}
+
+.auth-box::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+.auth-box::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 10px;
+}
+
+/* Make form more compact */
+.auth-box form {
+    margin-bottom: 1rem;
+}
+
+.auth-box .mb-3 {
+    margin-bottom: 1rem !important;
+}
+
+.auth-box .mb-4 {
+    margin-bottom: 1.5rem !important;
+}
+
+/* Make headings more compact */
+.auth-box h2 {
+    font-size: 1.75rem;
+    margin-bottom: 1rem;
+}
+
+.auth-box h5 {
+    font-size: 1rem;
+    margin-bottom: 0.75rem;
+} 

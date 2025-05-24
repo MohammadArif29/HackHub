@@ -1,0 +1,38 @@
+<div class="dashboard-content">
+    <div class="welcome-section">
+        <h1>My Hackathons</h1>
+        <p class="text-muted">View all your hackathons</p>
+    </div>
+
+    <div class="row g-4">
+        <% hackathons.forEach(hackathon => { %>
+            <div class="col-md-6 col-xl-4">
+                <div class="hackathon-card">
+                    <div class="hackathon-status <%= hackathon.status === 'active' ? 'status-active' : 'status-draft' %>">
+                        <%= hackathon.status.toUpperCase() %>
+                    </div>
+                    <h3 class="hackathon-title"><%= hackathon.title %></h3>
+                    <div class="hackathon-info">
+                        <div class="info-item">
+                            <i class="fas fa-calendar"></i>
+                            <span><%= new Date(hackathon.startDate).toLocaleDateString() %> - <%= new Date(hackathon.endDate).toLocaleDateString() %></span>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-users"></i>
+                            <span><%= hackathon.participants ? hackathon.participants.length : 0 %> Participants</span>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-gavel"></i>
+                            <span><%= hackathon.judges ? hackathon.judges.length : 0 %> Judges</span>
+                        </div>
+                    </div>
+                    <div class="hackathon-actions">
+                        <a href="/hackathons/<%= hackathon._id %>" class="btn btn-outline-primary">
+                            <i class="fas fa-cog"></i> View Details
+                        </a>
+                    </div>
+                </div>
+            </div>
+        <% }); %>
+    </div>
+</div> 

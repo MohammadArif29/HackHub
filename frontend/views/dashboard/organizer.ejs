@@ -1,0 +1,492 @@
+<div class="dashboard-content">
+    <!-- Welcome Section -->
+    <div class="welcome-section">
+        <h1>Welcome, <%= user.firstName %>!</h1>
+        <p class="text-muted">Manage your hackathons and track their progress</p>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="stats-row">
+        <div class="stat-card gradient-purple">
+            <div class="stat-icon">
+                <i class="fas fa-trophy"></i>
+            </div>
+            <div class="stat-info">
+                <h3><%= stats.activeHackathons %></h3>
+                <p>Active Hackathons</p>
+            </div>
+        </div>
+        <div class="stat-card gradient-blue">
+            <div class="stat-icon">
+                <i class="fas fa-users"></i>
+            </div>
+            <div class="stat-info">
+                <h3><%= stats.totalParticipants %></h3>
+                <p>Total Participants</p>
+            </div>
+        </div>
+        <div class="stat-card gradient-green">
+            <div class="stat-icon">
+                <i class="fas fa-code"></i>
+            </div>
+            <div class="stat-info">
+                <h3><%= stats.ongoingSubmissions %></h3>
+                <p>Submissions</p>
+            </div>
+        </div>
+        <div class="stat-card gradient-orange">
+            <div class="stat-icon">
+                <i class="fas fa-gavel"></i>
+            </div>
+            <div class="stat-info">
+                <h3><%= stats.assignedJudges %></h3>
+                <p>Judges</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <section class="dashboard-section">
+        <div class="section-header">
+            <h2>Quick Actions</h2>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-4">
+                <div class="action-card" data-bs-toggle="modal" data-bs-target="#createHackathonModal">
+                    <div class="action-icon gradient-purple">
+                        <i class="fas fa-plus"></i>
+                    </div>
+                    <h3>Create Hackathon</h3>
+                    <p>Start a new hackathon event</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="action-card" data-bs-toggle="modal" data-bs-target="#inviteJudgesModal">
+                    <div class="action-icon gradient-blue">
+                        <i class="fas fa-user-plus"></i>
+                    </div>
+                    <h3>Invite Judges</h3>
+                    <p>Add judges to your events</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="action-card" data-bs-toggle="modal" data-bs-target="#viewSubmissionsModal">
+                    <div class="action-icon gradient-green">
+                        <i class="fas fa-tasks"></i>
+                    </div>
+                    <h3>View Submissions</h3>
+                    <p>Review project submissions</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Active Hackathons -->
+    <section class="dashboard-section mb-5">
+        <div class="section-header d-flex justify-content-between align-items-center mb-4">
+            <h2>Active Hackathons</h2>
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createHackathonModal">
+                <i class="fas fa-plus"></i> New Hackathon
+            </button>
+        </div>
+        <div class="row g-4" id="activeHackathons">
+            <% activeHackathons.forEach(hackathon => { %>
+                <div class="col-md-6 col-xl-4">
+                    <div class="hackathon-card">
+                        <div class="hackathon-status <%= hackathon.status === 'active' ? 'status-active' : 'status-draft' %>">
+                            <%= hackathon.status.toUpperCase() %>
+                        </div>
+                        <h3 class="hackathon-title"><%= hackathon.title %></h3>
+                        <div class="hackathon-info">
+                            <div class="info-item">
+                                <i class="fas fa-calendar"></i>
+                                <span><%= new Date(hackathon.startDate).toLocaleDateString() %> - <%= new Date(hackathon.endDate).toLocaleDateString() %></span>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-users"></i>
+                                <span><%= hackathon.participants.length %> Participants</span>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-gavel"></i>
+                                <span><%= hackathon.judges.length %> Judges</span>
+                            </div>
+                        </div>
+                        <div class="hackathon-actions">
+                            <a href="/hackathons/<%= hackathon._id %>" class="btn btn-outline-primary">
+                                <i class="fas fa-cog"></i> Manage
+                            </a>
+                            <button class="btn btn-outline-success" onclick="viewSubmissions('<%= hackathon._id %>')">
+                                <i class="fas fa-inbox"></i> Submissions
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+    </section>
+
+    <!-- Recent Hackathons -->
+    <section class="dashboard-section">
+        <div class="section-header d-flex justify-content-between align-items-center mb-4">
+            <h2>Recent Hackathons</h2>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Hackathon</th>
+                        <th>End Date</th>
+                        <th>Participants</th>
+                        <th>Submissions</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% recentHackathons.forEach(hackathon => { %>
+                        <tr>
+                            <td><%= hackathon.title %></td>
+                            <td><%= new Date(hackathon.endDate).toLocaleDateString() %></td>
+                            <td><%= hackathon.participants.length %></td>
+                            <td><%= hackathon.submissions.length %></td>
+                            <td><span class="badge bg-secondary">Completed</span></td>
+                            <td>
+                                <a href="/hackathons/<%= hackathon._id %>/results" class="btn btn-sm btn-primary">
+                                    <i class="fas fa-chart-bar"></i> Results
+                                </a>
+                            </td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Judge Requests Section -->
+    <section class="dashboard-section mb-4">
+        <div class="section-header d-flex justify-content-between align-items-center">
+            <h2>Judge Requests</h2>
+        </div>
+        <div class="accordion" id="judgeRequestsAccordion">
+            <% activeHackathons.forEach(hackathon => { %>
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" 
+                                data-bs-toggle="collapse" 
+                                data-bs-target="#requests-<%= hackathon._id %>"
+                                data-hackathon-id="<%= hackathon._id %>">
+                            <%= hackathon.title %> - Judge Requests
+                            <span class="badge bg-primary ms-2" id="request-count-<%= hackathon._id %>">0</span>
+                        </button>
+                    </h2>
+                    <div id="requests-<%= hackathon._id %>" class="accordion-collapse collapse">
+                        <div class="accordion-body">
+                            <div class="row g-4" id="judgeRequests-<%= hackathon._id %>">
+                                <!-- Will be populated dynamically -->
+                                <div class="col-12">
+                                    <div class="alert alert-info">Loading requests...</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+    </section>
+</div>
+
+<!-- Create Hackathon Modal -->
+<div class="modal fade" id="createHackathonModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title">
+                    <i class="fas fa-trophy me-2"></i>
+                    Create New Hackathon
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="createHackathonForm">
+                    <!-- Basic Information -->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h6 class="mb-0">Basic Information</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label class="form-label">Hackathon Title</label>
+                                <input type="text" class="form-control" name="title" placeholder="Enter an engaging title" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Description</label>
+                                <textarea class="form-control" name="description" rows="3" 
+                                    placeholder="Describe your hackathon's purpose and goals" required></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Detailed Information (Optional)</label>
+                                <div class="input-group">
+                                    <input type="file" class="form-control" name="detailedInfo" 
+                                        accept=".pdf,.doc,.docx"
+                                        aria-describedby="fileHelp">
+                                    <label class="input-group-text" for="detailedInfo">
+                                        <i class="fas fa-upload"></i>
+                                    </label>
+                                </div>
+                                <div class="form-text" id="fileHelp">
+                                    Upload a PDF or DOC file with detailed hackathon information (max 5MB)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Timeline -->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h6 class="mb-0">Timeline</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Start Date</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-calendar"></i>
+                                        </span>
+                                        <input type="date" class="form-control" name="startDate" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">End Date</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-calendar"></i>
+                                        </span>
+                                        <input type="date" class="form-control" name="endDate" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Registration Deadline</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-clock"></i>
+                                        </span>
+                                        <input type="date" class="form-control" name="registrationDeadline" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Participation Details -->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h6 class="mb-0">Participation Details</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Maximum Participants</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-users"></i>
+                                        </span>
+                                        <input type="number" class="form-control" name="maxParticipants" 
+                                            min="1" placeholder="Enter max participants" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Prize Pool</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">$</span>
+                                        <input type="number" class="form-control" name="prizePool" 
+                                            min="0" placeholder="Enter prize amount" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Additional Information -->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h6 class="mb-0">Additional Information</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label class="form-label">Technologies/Tags</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-tags"></i>
+                                    </span>
+                                    <input type="text" class="form-control" name="tags" 
+                                        placeholder="e.g., AI, Web3, Mobile" required>
+                                </div>
+                                <div class="form-text">Separate tags with commas</div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Rules & Requirements</label>
+                                <textarea class="form-control" name="rules" rows="3" 
+                                    placeholder="List the rules and requirements for participation" required></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-1"></i>Cancel
+                </button>
+                <button type="button" class="btn btn-primary" onclick="createHackathon()">
+                    <i class="fas fa-plus me-1"></i>Create Hackathon
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Invite Judges Modal -->
+<div class="modal fade" id="inviteJudgesModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Invite Judges</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label class="form-label">Select Hackathon</label>
+                    <select class="form-select" id="hackathonSelect">
+                        <% activeHackathons.forEach(hackathon => { %>
+                            <option value="<%= hackathon._id %>"><%= hackathon.title %></option>
+                        <% }); %>
+                    </select>
+                </div>
+                <!-- Remove or comment out this section -->
+                <!--
+                <div class="available-judges">
+                    <% if (availableJudges && availableJudges.length > 0) { %>
+                        <% availableJudges.forEach(judge => { %>
+                            <div class="judge-card">
+                                <div class="judge-info">
+                                    <% if (judge.user) { %>
+                                        <h4><%= judge.user.firstName %> <%= judge.user.lastName %></h4>
+                                    <% } else { %>
+                                        <h4>Unknown Judge</h4>
+                                    <% } %>
+                                    <p><strong>Expertise:</strong> <%= judge.expertise ? judge.expertise.join(', ') : 'Not specified' %></p>
+                                    <p><strong>Experience:</strong> <%= judge.experience || 0 %> years</p>
+                                </div>
+                                <div class="judge-actions">
+                                    <button class="btn btn-primary" onclick="inviteJudge('<%= judge._id %>')">
+                                        Send Invite
+                                    </button>
+                                </div>
+                            </div>
+                        <% }); %>
+                    <% } %>
+                </div>
+                -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- View Submissions Modal -->
+<div class="modal fade" id="viewSubmissionsModal" tabindex="-1">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Project Submissions</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Filters -->
+                <div class="row mb-4">
+                    <div class="col-md-4">
+                        <label class="form-label">Filter by Hackathon</label>
+                        <select class="form-select" id="hackathonFilter" onchange="filterSubmissions()">
+                            <option value="">All Hackathons</option>
+                            <% activeHackathons.forEach(hackathon => { %>
+                                <option value="<%= hackathon._id %>"><%= hackathon.title %></option>
+                            <% }); %>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Filter by Status</label>
+                        <select class="form-select" id="statusFilter" onchange="filterSubmissions()">
+                            <option value="">All Status</option>
+                            <option value="pending">Pending Review</option>
+                            <option value="reviewed">Reviewed</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Submissions Table -->
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Project Name</th>
+                                <th>Hackathon</th>
+                                <th>Team/Participant</th>
+                                <th>Submitted On</th>
+                                <th>Status</th>
+                                <th>Score</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="submissionsTableBody">
+                            <% if (submissions && submissions.length > 0) { %>
+                                <% submissions.forEach(submission => { %>
+                                    <tr>
+                                        <td><%= submission.projectName %></td>
+                                        <td><%= submission.hackathon.title %></td>
+                                        <td><%= submission.participant.user.firstName %> <%= submission.participant.user.lastName %></td>
+                                        <td><%= new Date(submission.submittedAt).toLocaleDateString() %></td>
+                                        <td>
+                                            <span class="badge bg-<%= submission.status === 'reviewed' ? 'success' : 'warning' %>">
+                                                <%= submission.status %>
+                                            </span>
+                                        </td>
+                                        <td><%= submission.score || 'N/A' %></td>
+                                        <td>
+                                            <button class="btn btn-sm btn-primary" onclick="viewSubmissionDetails('<%= submission._id %>')">
+                                                View Details
+                                            </button>
+                                        </td>
+                                    </tr>
+                                <% }); %>
+                            <% } else { %>
+                                <tr>
+                                    <td colspan="7" class="text-center">No submissions found</td>
+                                </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Submission Details Modal -->
+<div class="modal fade" id="submissionDetailsModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Submission Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="submissionDetailsContent">
+                <!-- Content will be loaded dynamically -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add this before the closing body tag if not already present -->
+<script src="/assets/js/manage-hackathon.js"></script> 

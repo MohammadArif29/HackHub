@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Participant Dashboard - HackHub</title>
+</head>
+<body>
+    <div class="dashboard-content">
+        <!-- Welcome Banner -->
+        <div class="welcome-banner">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1>Welcome, <%= user.firstName %>! 👋</h1>
+                    <p>Track your hackathon journey and manage your projects</p>
+                </div>
+                <div class="col-md-4 text-md-end">
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#joinHackathonModal">
+                        <i class="fas fa-plus-circle me-2"></i>Join New Hackathon
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="row g-4 mb-4">
+            <div class="col-md-3">
+                <div class="stat-card gradient-purple">
+                    <div class="stat-icon">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3><%= stats.hackathonsJoined || 0 %></h3>
+                        <p>Hackathons Joined</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card gradient-blue">
+                    <div class="stat-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3><%= stats.activeTeams || 0 %></h3>
+                        <p>Active Teams</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card gradient-green">
+                    <div class="stat-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3><%= stats.projectsSubmitted || 0 %></h3>
+                        <p>Projects Submitted</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card gradient-orange">
+                    <div class="stat-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3><%= stats.achievements || 0 %></h3>
+                        <p>Achievements</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content Grid -->
+        <div class="row">
+            <!-- Left Column -->
+            <div class="col-lg-8">
+                <!-- Active Hackathons -->
+                <div class="dashboard-card mb-4">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h2>My Active Hackathons</h2>
+                        <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#joinHackathonModal">
+                            <i class="fas fa-plus"></i> Join New
+                        </button>
+                    </div>
+                    <div class="row g-4" id="activeHackathons">
+                        <% if (activeHackathons && activeHackathons.length > 0) { %>
+                            <% activeHackathons.forEach(hackathon => { %>
+                                <div class="col-md-6">
+                                    <div class="hackathon-card">
+                                        <h3><%= hackathon.title %></h3>
+                                        <div class="progress mb-3">
+                                            <div class="progress-bar" role="progressbar" 
+                                                style="width: <%= hackathon.progress %>%"
+                                                aria-valuenow="<%= hackathon.progress %>"
+                                                aria-valuemin="0" 
+                                                aria-valuemax="100">
+                                                <%= hackathon.progress %>%
+                                            </div>
+                                        </div>
+                                        <div class="d-flex justify-content-between mb-3">
+                                            <span class="badge bg-primary"><%= hackathon.status %></span>
+                                            <span><i class="far fa-clock"></i> <%= formatDate(hackathon.endDate) %></span>
+                                        </div>
+                                        <div class="action-buttons">
+                                            <button class="btn btn-sm btn-outline-primary" onclick="viewHackathon('<%= hackathon._id %>')">
+                                                View Details
+                                            </button>
+                                            <button class="btn btn-sm btn-primary" onclick="submitProject('<%= hackathon._id %>')">
+                                                Submit Project
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            <% }) %>
+                        <% } else { %>
+                            <div class="col-12">
+                                <div class="alert alert-info">
+                                    You haven't joined any hackathons yet. 
+                                    <a href="#" data-bs-toggle="modal" data-bs-target="#joinHackathonModal">Join one now!</a>
+                                </div>
+                            </div>
+                        <% } %>
+                    </div>
+                </div>
+
+                <!-- Recent Submissions -->
+                <div class="dashboard-card">
+                    <h2>Recent Submissions</h2>
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Project</th>
+                                    <th>Hackathon</th>
+                                    <th>Submitted On</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% if (recentSubmissions && recentSubmissions.length > 0) { %>
+                                    <% recentSubmissions.forEach(submission => { %>
+                                        <tr>
+                                            <td><%= submission.projectName %></td>
+                                            <td><%= submission.hackathon.title %></td>
+                                            <td><%= formatDate(submission.submittedAt) %></td>
+                                            <td>
+                                                <span class="badge bg-<%= submission.status === 'accepted' ? 'success' : 'warning' %>">
+                                                    <%= submission.status %>
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-sm btn-outline-primary" 
+                                                        onclick="viewSubmission('<%= submission._id %>')">
+                                                    View
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    <% }) %>
+                                <% } else { %>
+                                    <tr>
+                                        <td colspan="5" class="text-center">No submissions yet</td>
+                                    </tr>
+                                <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column -->
+            <div class="col-lg-4">
+                <!-- Team Section -->
+                <div class="dashboard-card mb-4">
+                    <h2>My Teams</h2>
+                    <% if (teams && teams.length > 0) { %>
+                        <% teams.forEach(team => { %>
+                            <div class="team-card mb-3">
+                                <h4><%= team.name %></h4>
+                                <p class="text-muted"><%= team.hackathon.title %></p>
+                                <div class="team-members mb-2">
+                                    <% team.members.forEach(member => { %>
+                                        <span class="member-badge"><%= member.user.firstName %></span>
+                                    <% }) %>
+                                </div>
+                                <button class="btn btn-sm btn-outline-primary w-100" 
+                                        onclick="manageTeam('<%= team._id %>')">
+                                    Manage Team
+                                </button>
+                            </div>
+                        <% }) %>
+                    <% } else { %>
+                        <div class="alert alert-info">
+                            No teams joined yet
+                        </div>
+                    <% } %>
+                </div>
+
+                <!-- Available Hackathons -->
+                <div class="dashboard-card">
+                    <h2>Available Hackathons</h2>
+                    <div class="available-hackathons">
+                        <% if (availableHackathons && availableHackathons.length > 0) { %>
+                            <% availableHackathons.forEach(hackathon => { %>
+                                <div class="available-hackathon-card mb-3">
+                                    <h4><%= hackathon.title %></h4>
+                                    <p><%= hackathon.description %></p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="text-muted">
+                                            <i class="far fa-calendar"></i> 
+                                            <%= formatDate(hackathon.startDate) %>
+                                        </span>
+                                        <button class="btn btn-sm btn-primary" 
+                                                onclick="joinHackathon('<%= hackathon._id %>')">
+                                            Join Now
+                                        </button>
+                                    </div>
+                                </div>
+                            <% }) %>
+                        <% } else { %>
+                            <div class="alert alert-info">
+                                No hackathons available at the moment
+                            </div>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Include Modals -->
+    <%- include('../partials/modals/join-hackathon') %>
+    <%- include('../partials/modals/submit-project') %>
+    <%- include('../partials/modals/view-submission') %>
+    <%- include('../partials/modals/add-milestone') %>
+    <%- include('../partials/modals/share-resource') %>
+    <%- include('../partials/modals/invite-member') %>
+</body>
+</html> 

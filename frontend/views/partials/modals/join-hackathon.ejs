@@ -1,0 +1,41 @@
+<div class="modal fade" id="joinHackathonModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Join Hackathon</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="joinHackathonForm">
+                    <div class="mb-3">
+                        <label class="form-label">Select Hackathon</label>
+                        <select class="form-select" name="hackathonId" required>
+                            <option value="">Choose a hackathon...</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Team Name</label>
+                        <input type="text" class="form-control" name="teamName" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Team Description</label>
+                        <textarea class="form-control" name="teamDescription" rows="3"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Looking for Team Members?</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="isRecruiting" id="isRecruiting">
+                            <label class="form-check-label" for="isRecruiting">
+                                Yes, I'm looking for team members
+                            </label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="joinHackathon()">Join Hackathon</button>
+            </div>
+        </div>
+    </div>
+</div> 

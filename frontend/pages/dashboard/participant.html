@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Participant Dashboard - HackHub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="/assets/css/style.css" rel="stylesheet">
+    <link href="/assets/css/dashboard.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Sidebar -->
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <i class="fas fa-code"></i>
+            <span>HackHub</span>
+        </div>
+        <ul class="sidebar-menu">
+            <li class="active">
+                <a href="#"><i class="fas fa-home"></i> Dashboard</a>
+            </li>
+            <li>
+                <a href="#"><i class="fas fa-trophy"></i> My Hackathons</a>
+            </li>
+            <li>
+                <a href="#"><i class="fas fa-users"></i> My Teams</a>
+            </li>
+            <li>
+                <a href="#"><i class="fas fa-tasks"></i> My Submissions</a>
+            </li>
+            <li>
+                <a href="#"><i class="fas fa-user"></i> Profile</a>
+            </li>
+        </ul>
+        <div class="sidebar-footer">
+            <button class="btn btn-logout" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Top Navigation -->
+        <header class="top-nav">
+            <div class="d-flex justify-content-between align-items-center">
+                <h1>Dashboard</h1>
+                <div class="user-menu">
+                    <img src="/assets/images/avatar-placeholder.png" alt="Profile" class="avatar">
+                    <span class="user-name">John Doe</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Dashboard Content -->
+        <div class="dashboard-content">
+            <!-- Stats Cards -->
+            <div class="row g-4 mb-4">
+                <div class="col-md-4">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>5</h3>
+                            <p>Hackathons Joined</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>3</h3>
+                            <p>Active Teams</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>8</h3>
+                            <p>Projects Submitted</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Upcoming Hackathons -->
+            <section class="dashboard-section">
+                <h2>Upcoming Hackathons</h2>
+                <div class="row g-4" id="upcomingHackathons">
+                    <!-- Hackathons will be loaded dynamically -->
+                </div>
+            </section>
+
+            <!-- Active Teams -->
+            <section class="dashboard-section">
+                <h2>My Teams</h2>
+                <div class="row g-4" id="activeTeams">
+                    <!-- Teams will be loaded dynamically -->
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/js/dashboard.js"></script>
+</body>
+</html> 

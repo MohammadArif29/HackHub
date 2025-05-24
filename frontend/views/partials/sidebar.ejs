@@ -1,0 +1,17 @@
+<nav class="sidebar">
+    <div class="sidebar-header">
+        <i class="fas fa-code"></i>
+        <span>HackHub</span>
+    </div>
+    <ul class="sidebar-menu">
+        <li class="<%= path === 'dashboard' ? 'active' : '' %>">
+            <a href="/dashboard/<%= user.role %>"><i class="fas fa-home"></i> Dashboard</a>
+        </li>
+        <%- include(`../partials/menu-${user.role}`) %>
+    </ul>
+    <div class="sidebar-footer">
+        <button class="btn btn-logout" onclick="logout()">
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+    </div>
+</nav> 

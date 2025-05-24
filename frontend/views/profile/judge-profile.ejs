@@ -1,0 +1,109 @@
+<div class="profile-container">
+    <!-- Profile Header -->
+    <div class="profile-header gradient-blue">
+        <div class="profile-avatar">
+            <img src="<%= user.avatar || 'https://ui-avatars.com/api/?name=' + user.firstName + '+' + user.lastName %>" 
+                 alt="Profile Picture">
+        </div>
+        <div class="profile-info">
+            <h1><%= user.firstName %> <%= user.lastName %></h1>
+            <p><i class="fas fa-gavel"></i> Judge</p>
+        </div>
+    </div>
+
+    <!-- Profile Content -->
+    <div class="profile-content">
+        <div class="row">
+            <!-- Left Column -->
+            <div class="col-lg-4">
+                <!-- Basic Info Card -->
+                <div class="profile-card">
+                    <h3>Professional Information</h3>
+                    <form id="profileForm">
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" value="<%= user.email %>" disabled>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Current Role</label>
+                            <input type="text" class="form-control" value="<%= judge.currentRole %>" disabled>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Years of Experience</label>
+                            <input type="number" class="form-control" value="<%= judge.experience %>" disabled>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Expertise Areas</label>
+                            <textarea class="form-control" rows="3" disabled><%= judge.expertise.join(', ') %></textarea>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Specializations Card -->
+                <div class="profile-card mt-4">
+                    <h3>Specializations</h3>
+                    <div class="skills-container">
+                        <% judge.expertise.forEach(exp => { %>
+                            <span class="skill-tag"><%= exp %></span>
+                        <% }) %>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column -->
+            <div class="col-lg-8">
+                <!-- Statistics Card -->
+                <div class="profile-card">
+                    <h3>Judging Statistics</h3>
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <div class="stat-box gradient-purple">
+                                <h4>Hackathons Judged</h4>
+                                <p class="stat-number"><%= judge.hackathonsJudged.length %></p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="stat-box gradient-blue">
+                                <h4>Projects Evaluated</h4>
+                                <p class="stat-number"><%= judge.evaluations.length %></p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="stat-box gradient-green">
+                                <h4>Active Assignments</h4>
+                                <p class="stat-number"><%= judge.activeAssignments.length %></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Evaluations -->
+                <div class="profile-card mt-4">
+                    <h3>Recent Evaluations</h3>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Project</th>
+                                    <th>Hackathon</th>
+                                    <th>Score</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% judge.recentEvaluations.forEach(eval => { %>
+                                    <tr>
+                                        <td><%= eval.projectName %></td>
+                                        <td><%= eval.hackathonName %></td>
+                                        <td><%= eval.score %>/100</td>
+                                        <td><%= formatDate(eval.date) %></td>
+                                    </tr>
+                                <% }) %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

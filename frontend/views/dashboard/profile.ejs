@@ -1,0 +1,188 @@
+<div class="dashboard-content">
+    <!-- Profile Header -->
+    <div class="profile-header mb-4">
+        <div class="profile-cover"></div>
+        <div class="profile-info">
+            <div class="profile-avatar">
+                <img src="https://ui-avatars.com/api/?name=<%= user.firstName %>+<%= user.lastName %>&size=120" 
+                     alt="Profile Picture"
+                     class="profile-img">
+                <button class="btn btn-sm btn-light upload-btn" onclick="document.getElementById('avatarUpload').click()">
+                    <i class="fas fa-camera"></i>
+                </button>
+                <input type="file" id="avatarUpload" hidden accept="image/*">
+            </div>
+            <div class="profile-details">
+                <h1><%= user.firstName %> <%= user.lastName %></h1>
+                <p class="text-muted"><%= user.role.charAt(0).toUpperCase() + user.role.slice(1) %></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Personal Information -->
+        <div class="col-lg-8">
+            <div class="card mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Personal Information</h5>
+                    <div>
+                        <button class="btn btn-primary btn-sm me-2" onclick="enableEdit()">
+                            <i class="fas fa-edit"></i> Edit Profile
+                        </button>
+                        <button class="btn btn-danger btn-sm" onclick="resetProfile()">
+                            <i class="fas fa-redo"></i> Reset Profile
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form id="profileForm">
+                        <div class="form-section">
+                            <h6 class="form-section-title">Basic Information</h6>
+                            <div class="row g-3">
+                                <div class="col-12 col-md-6">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="firstName" name="firstName" 
+                                            value="<%= user.firstName %>" disabled>
+                                        <label for="firstName">First Name</label>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="lastName" name="lastName" 
+                                            value="<%= user.lastName %>" disabled>
+                                        <label for="lastName">Last Name</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <h6 class="form-section-title">Contact Information</h6>
+                            <div class="row g-3">
+                                <div class="col-12 col-md-6">
+                                    <div class="form-floating">
+                                        <input type="email" class="form-control" id="email" name="email" 
+                                            value="<%= user.email %>" disabled>
+                                        <label for="email">Email</label>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <div class="form-floating">
+                                        <input type="tel" class="form-control" id="phone" name="phone" 
+                                            value="<%= organizer.phone || '' %>" disabled>
+                                        <label for="phone">Phone</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Organization Type</label>
+                                <select class="form-control" name="organizationType" disabled>
+                                    <option value="company" <%= organizer.organizationType === 'company' ? 'selected' : '' %>>Company</option>
+                                    <option value="university" <%= organizer.organizationType === 'university' ? 'selected' : '' %>>University</option>
+                                    <option value="nonprofit" <%= organizer.organizationType === 'nonprofit' ? 'selected' : '' %>>Non-Profit</option>
+                                    <option value="other" <%= organizer.organizationType === 'other' ? 'selected' : '' %>>Other</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">City</label>
+                                <input type="text" class="form-control" name="city" 
+                                    value="<%= organizer.location?.city || '' %>" disabled>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Country</label>
+                                <input type="text" class="form-control" name="country" 
+                                    value="<%= organizer.location?.country || '' %>" disabled>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Organization</label>
+                            <input type="text" class="form-control" name="organization" 
+                                value="<%= organizer.organization %>" disabled>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Bio</label>
+                            <textarea class="form-control" name="bio" rows="3" disabled><%= organizer.bio || '' %></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Website</label>
+                            <input type="url" class="form-control" name="website" 
+                                value="<%= organizer.website || '' %>" disabled>
+                        </div>
+                        <div class="form-actions" style="display: none;">
+                            <button type="button" class="btn btn-primary" onclick="saveProfile()">
+                                Save Changes
+                            </button>
+                            <button type="button" class="btn btn-light" onclick="cancelEdit()">
+                                Cancel
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Statistics & Additional Info -->
+        <div class="col-lg-4">
+            <!-- Statistics Card -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Statistics</h5>
+                </div>
+                <div class="card-body">
+                    <div class="profile-stat">
+                        <i class="fas fa-trophy"></i>
+                        <div>
+                            <h6>Total Hackathons</h6>
+                            <p><%= stats.totalHackathons || 0 %></p>
+                        </div>
+                    </div>
+                    <div class="profile-stat">
+                        <i class="fas fa-users"></i>
+                        <div>
+                            <h6>Total Participants</h6>
+                            <p><%= stats.totalParticipants || 0 %></p>
+                        </div>
+                    </div>
+                    <div class="profile-stat">
+                        <i class="fas fa-star"></i>
+                        <div>
+                            <h6>Average Rating</h6>
+                            <p><%= stats.averageRating || 'N/A' %></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Social Links -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h6 class="mb-0">Social Links</h6>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label class="form-label">LinkedIn</label>
+                            <input type="url" class="form-control" name="linkedin" 
+                                value="<%= organizer.socialLinks?.linkedin || '' %>" disabled>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Twitter</label>
+                            <input type="url" class="form-control" name="twitter" 
+                                value="<%= organizer.socialLinks?.twitter || '' %>" disabled>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">GitHub</label>
+                            <input type="url" class="form-control" name="github" 
+                                value="<%= organizer.socialLinks?.github || '' %>" disabled>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 
