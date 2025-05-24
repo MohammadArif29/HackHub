@@ -100,8 +100,8 @@ HackHub is a comprehensive platform for managing hackathons, connecting organize
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/hackhub.git
-cd hackhub
+git clone https://github.com/MohammadArif29/HackHub.git
+cd HackHub
 ```
 
 2. Install dependencies:
