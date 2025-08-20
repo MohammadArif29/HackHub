@@ -44,7 +44,7 @@ async function createHackathon() {
     });
 
     try {
-        const response = await fetch('/api/hackathons/create', {
+        const response = await fetch('https://hackhub-fqxx.onrender.com/api/hackathons/create', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -92,7 +92,7 @@ async function inviteJudge(judgeId) {
     const hackathonId = document.getElementById('hackathonSelect').value;
 
     try {
-        const response = await fetch(`/api/hackathons/${hackathonId}/invite-judge`, {
+        const response = await fetch(`https://hackhub-fqxx.onrender.com/api/hackathons/${hackathonId}/invite-judge`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -116,7 +116,7 @@ async function inviteJudge(judgeId) {
 }
 
 function viewSubmissions(hackathonId) {
-    window.location.href = `/hackathons/${hackathonId}/submissions`;
+    window.location.href = `https://hackhub-fqxx.onrender.com/hackathons/${hackathonId}/submissions`;
 }
 
 function showAlert(type, message) {
@@ -133,7 +133,7 @@ function showAlert(type, message) {
 
 async function loadActiveHackathons() {
     try {
-        const response = await fetch('/api/hackathons/active', {
+        const response = await fetch('https://hackhub-fqxx.onrender.com/api/hackathons/active', {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
             }
@@ -152,7 +152,7 @@ async function loadActiveHackathons() {
 
 async function loadRecentHackathons() {
     try {
-        const response = await fetch('/api/hackathons/recent', {
+        const response = await fetch('https://hackhub-fqxx.onrender.com/api/hackathons/recent', {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
             }
@@ -206,7 +206,7 @@ function updateActiveHackathons(hackathons) {
                     </div>
                 </div>
                 <div class="hackathon-actions">
-                    <a href="/hackathons/${hackathon._id}" class="btn btn-outline-primary">
+                    <a href="https://hackhub-fqxx.onrender.com/hackathons/${hackathon._id}" class="btn btn-outline-primary">
                         <i class="fas fa-cog"></i> Manage
                     </a>
                     <button class="btn btn-outline-success" onclick="viewSubmissions('${hackathon._id}')">
@@ -232,7 +232,7 @@ function updateRecentHackathons(hackathons) {
             <td>${hackathon.participants.length}</td>
             <td>${hackathon.submissions.length}</td>
             <td><span class="badge bg-secondary">Completed</span></td>
-            <td><a href="/hackathons/${hackathon._id}/results" class="btn btn-sm btn-primary">View Results</a></td>
+            <td><a href="https://hackhub-fqxx.onrender.com/hackathons/${hackathon._id}/results" class="btn btn-sm btn-primary">View Results</a></td>
         </tr>
     `).join('');
 }
@@ -240,7 +240,7 @@ function updateRecentHackathons(hackathons) {
 // Add this new function to fetch dashboard stats
 async function loadDashboardStats() {
     try {
-        const response = await fetch('/dashboard/organizer/stats', {
+        const response = await fetch('https://hackhub-fqxx.onrender.com/dashboard/organizer/stats', {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
             }
@@ -289,7 +289,7 @@ async function loadJudgeRequestsForHackathon(hackathonId) {
                 <p class="mt-2 text-muted">Loading judge requests...</p>
             </div>`;
 
-        const response = await fetch(`/api/organizer/judge-requests/${hackathonId}`);
+        const response = await fetch(`https://hackhub-fqxx.onrender.com/api/organizer/judge-requests/${hackathonId}`);
         if (!response.ok) {
             throw new Error('Failed to fetch judge requests');
         }
@@ -371,7 +371,7 @@ async function loadJudgeRequestsForHackathon(hackathonId) {
 
 async function respondToJudgeRequest(hackathonId, judgeId, response) {
     try {
-        const res = await fetch(`/api/organizer/respond-to-judge-request/${hackathonId}/${judgeId}`, {
+        const res = await fetch(`https://hackhub-fqxx.onrender.com/api/organizer/respond-to-judge-request/${hackathonId}/${judgeId}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

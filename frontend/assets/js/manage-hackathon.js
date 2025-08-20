@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 async function loadManageableHackathons() {
     try {
-        const response = await fetch('/api/hackathons/manageable', {
+        const response = await fetch('https://hackhub-fqxx.onrender.com/api/hackathons/manageable', {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`,
                 'Accept': 'application/json'
@@ -81,7 +81,7 @@ function confirmDelete(hackathonId, hackathonTitle) {
 
 async function deleteHackathon(hackathonId) {
     try {
-        const response = await fetch(`/api/hackathons/${hackathonId}`, {
+        const response = await fetch(`https://hackhub-fqxx.onrender.com/api/hackathons/${hackathonId}`, {
             method: 'DELETE',
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -130,7 +130,7 @@ async function createHackathon() {
             rules: form.rules.value
         };
 
-        const response = await fetch('/api/hackathons/create', {
+        const response = await fetch('https://hackhub-fqxx.onrender.com/api/hackathons/create', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

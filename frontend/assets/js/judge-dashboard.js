@@ -2,17 +2,17 @@
 async function loadDashboardData() {
     try {
         // Load stats
-        const statsResponse = await fetch('/api/judge/stats');
+        const statsResponse = await fetch('https://hackhub-fqxx.onrender.com/api/judge/stats');
         const stats = await statsResponse.json();
         updateStats(stats);
 
         // Load active assignments
-        const assignmentsResponse = await fetch('/api/judge/assignments');
+        const assignmentsResponse = await fetch('https://hackhub-fqxx.onrender.com/api/judge/assignments');
         const assignments = await assignmentsResponse.json();
         updateAssignments(assignments);
 
         // Load upcoming hackathons
-        const upcomingResponse = await fetch('/api/judge/upcoming-hackathons');
+        const upcomingResponse = await fetch('https://hackhub-fqxx.onrender.com/api/judge/upcoming-hackathons');
         const upcomingHackathons = await upcomingResponse.json();
         updateUpcomingHackathons(upcomingHackathons);
     } catch (error) {
@@ -24,7 +24,7 @@ async function loadDashboardData() {
 // Request to judge a hackathon
 async function requestToJudge(hackathonId) {
     try {
-        const response = await fetch(`/api/judge/request-to-judge/${hackathonId}`, {
+        const response = await fetch(`https://hackhub-fqxx.onrender.com/api/judge/request-to-judge/${hackathonId}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -53,7 +53,7 @@ async function requestToJudge(hackathonId) {
 // Handle invitation response
 async function respondToInvitation(hackathonId, response) {
     try {
-        const res = await fetch(`/judge/respond-to-invite/${hackathonId}`, {
+        const res = await fetch(`https://hackhub-fqxx.onrender.com/judge/respond-to-invite/${hackathonId}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -143,7 +143,7 @@ function updateAssignments(assignments) {
                 </div>
             </td>
             <td>
-                <a href="/judge/review/${assignment.hackathon._id}" 
+                <a href="https://hackhub-fqxx.onrender.com/judge/review/${assignment.hackathon._id}" 
                    class="btn btn-primary btn-sm">Review Submissions</a>
             </td>
         </tr>

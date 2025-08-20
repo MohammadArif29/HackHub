@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (!token || !user) {
         console.log('No token or user found, redirecting to login');
-        window.location.href = '/pages/login.html';
+        window.location.href = 'https://hackhub-fqxx.onrender.com/pages/login.html';
         return;
     }
 
@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Only fetch dashboard data if we're on a dashboard page
     const isDashboardPage = window.location.pathname.startsWith('/dashboard');
     if (isDashboardPage) {
-        fetch(`/dashboard/${user.role}`, {
+        fetch(`https://hackhub-fqxx.onrender.com/dashboard/${user.role}`, {
             headers: {
                 'Authorization': `Bearer ${token}`,
                 'Accept': 'text/html'

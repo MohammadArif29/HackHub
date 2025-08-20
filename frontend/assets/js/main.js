@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function() {
 async function fetchUpcomingHackathons() {
     try {
         // Add proper headers and error handling
-        const response = await fetch('/api/hackathons/upcoming', {
+        const response = await fetch('https://hackhub-fqxx.onrender.com/api/hackathons/upcoming', {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`,
                 'Accept': 'application/json'
@@ -103,7 +103,7 @@ function displayHackathons(hackathons) {
                 <p class="text-muted">
                     <small>Starting: ${new Date(hackathon.startDate).toLocaleDateString()}</small>
                 </p>
-                <a href="pages/hackathon-details.html?id=${hackathon._id}" 
+                <a href="https://hackhub-fqxx.onrender.com/pages/hackathon-details.html?id=${hackathon._id}" 
                    class="btn btn-primary">Learn More</a>
             </div>
         </div>
@@ -113,7 +113,7 @@ function displayHackathons(hackathons) {
 function inviteJudge(judgeId) {
     const hackathonId = document.getElementById('hackathonSelect').value;
     
-    fetch('/api/hackathons/invite-judge', {
+    fetch('https://hackhub-fqxx.onrender.com/api/hackathons/invite-judge', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -171,7 +171,7 @@ function saveProfile() {
     if (twitter) data.twitter = twitter.value;
     if (github) data.github = github.value;
 
-    fetch('/profile/update', {
+    fetch('https://hackhub-fqxx.onrender.com/profile/update', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -215,7 +215,7 @@ function saveProfile() {
 
 function resetProfile() {
     if (confirm('Are you sure you want to reset your profile? This cannot be undone.')) {
-        fetch('/profile/reset', {
+        fetch('https://hackhub-fqxx.onrender.com/profile/reset', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -242,7 +242,7 @@ function filterSubmissions() {
     const hackathonId = document.getElementById('hackathonFilter').value;
     const status = document.getElementById('statusFilter').value;
 
-    fetch(`/api/submissions/filter?hackathon=${hackathonId}&status=${status}`)
+    fetch(`https://hackhub-fqxx.onrender.com/api/submissions/filter?hackathon=${hackathonId}&status=${status}`)
         .then(response => response.json())
         .then(data => {
             updateSubmissionsTable(data);
@@ -254,7 +254,7 @@ function filterSubmissions() {
 }
 
 function viewSubmissionDetails(submissionId) {
-    fetch(`/api/submissions/${submissionId}`)
+    fetch(`https://hackhub-fqxx.onrender.com/api/submissions/${submissionId}`)
         .then(response => response.json())
         .then(submission => {
             const modal = document.getElementById('submissionDetailsContent');
@@ -317,7 +317,7 @@ function submitEvaluation() {
     const formData = new FormData(form);
     const data = Object.fromEntries(formData);
 
-    fetch(`/api/submissions/${data.submissionId}/evaluate`, {
+    fetch(`https://hackhub-fqxx.onrender.com/api/submissions/${data.submissionId}/evaluate`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

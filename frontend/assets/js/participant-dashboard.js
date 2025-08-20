@@ -70,7 +70,7 @@ function initializeEventListeners() {
 
 async function loadDashboardStats() {
     try {
-        const response = await fetch('/api/participant/stats');
+        const response = await fetch('https://hackhub-fqxx.onrender.com/api/participant/stats');
         const stats = await response.json();
         
         // Update stats in the UI
@@ -89,7 +89,7 @@ async function loadDashboardStats() {
 
 async function loadActiveHackathons() {
     try {
-        const response = await fetch('/api/participant/active-hackathons');
+        const response = await fetch('https://hackhub-fqxx.onrender.com/api/participant/active-hackathons');
         const hackathons = await response.json();
         
         const container = document.getElementById('activeHackathons');
@@ -229,7 +229,7 @@ async function handleQuickAction(action) {
 
 async function loadTeamManagement() {
     try {
-        const participant = await fetch('/api/participant/profile').then(res => res.json());
+        const participant = await fetch('https://hackhub-fqxx.onrender.com/api/participant/profile').then(res => res.json());
         const teams = participant.teams;
 
         const container = document.getElementById('activeHackathons');
@@ -258,7 +258,7 @@ async function loadTeamManagement() {
 
 async function joinHackathon(hackathonId) {
     try {
-        const response = await fetch('/api/participant/join-hackathon', {
+        const response = await fetch('https://hackhub-fqxx.onrender.com/api/participant/join-hackathon', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -282,7 +282,7 @@ async function submitProject(hackathonId) {
     formData.append('hackathonId', hackathonId);
 
     try {
-        const response = await fetch('/api/participant/submit-project', {
+        const response = await fetch('https://hackhub-fqxx.onrender.com/api/participant/submit-project', {
             method: 'POST',
             body: formData
         });
@@ -301,7 +301,7 @@ async function submitProject(hackathonId) {
 // Add achievement tracking
 async function loadAchievements() {
     try {
-        const response = await fetch('/api/participant/achievements');
+        const response = await fetch('https://hackhub-fqxx.onrender.com/api/participant/achievements');
         const achievements = await response.json();
 
         const container = document.getElementById('achievementsContainer');
@@ -342,7 +342,7 @@ function formatAchievementTitle(type) {
 
 async function loadAvailableHackathons(searchQuery = '') {
     try {
-        const response = await fetch('/api/participant/available-hackathons');
+        const response = await fetch('https://hackhub-fqxx.onrender.com/api/participant/available-hackathons');
         let hackathons = await response.json();
 
         if (searchQuery) {
@@ -436,7 +436,7 @@ function filterHackathons(filter) {
 // Project Progress Tracking
 async function updateProjectProgress(hackathonId, progress) {
     try {
-        const response = await fetch(`/api/participant/update-progress/${hackathonId}`, {
+        const response = await fetch(`https://hackhub-fqxx.onrender.com/api/participant/update-progress/${hackathonId}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -489,7 +489,7 @@ async function addMilestone(hackathonId) {
     };
 
     try {
-        const response = await fetch(`/api/participant/add-milestone/${hackathonId}`, {
+        const response = await fetch(`https://hackhub-fqxx.onrender.com/api/participant/add-milestone/${hackathonId}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -514,7 +514,7 @@ async function shareResource(teamId) {
     formData.append('description', document.getElementById('resourceDescription').value);
 
     try {
-        const response = await fetch(`/api/participant/share-resource/${teamId}`, {
+        const response = await fetch(`https://hackhub-fqxx.onrender.com/api/participant/share-resource/${teamId}`, {
             method: 'POST',
             body: formData
         });
@@ -532,7 +532,7 @@ async function shareResource(teamId) {
 // Load dashboard data
 async function loadDashboardData() {
     try {
-        const response = await fetch('/api/participant/dashboard-data');
+        const response = await fetch('https://hackhub-fqxx.onrender.com/api/participant/dashboard-data');
         const data = await response.json();
         
         updateStats(data.stats);
@@ -555,7 +555,7 @@ async function createTeam(hackathonId) {
     };
 
     try {
-        const response = await fetch('/api/participant/create-team', {
+        const response = await fetch('https://hackhub-fqxx.onrender.com/api/participant/create-team', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -575,7 +575,7 @@ async function createTeam(hackathonId) {
 
 async function joinTeam(teamId) {
     try {
-        const response = await fetch(`/api/participant/join-team/${teamId}`, {
+        const response = await fetch(`https://hackhub-fqxx.onrender.com/api/participant/join-team/${teamId}`, {
             method: 'POST'
         });
 
